@@ -1,0 +1,19 @@
+
+{
+    "development": {
+        "brokerConnection": {
+            "username": "Dave",
+			"password": "kkmtest",
+			"port": 1883,
+			"host":"localhost"
+        }
+    },
+    "production": {
+        "brokerConnection": {
+            "username": "",
+			"password": "",
+			"port": 1883,
+			"host":""
+        }
+    }
+}

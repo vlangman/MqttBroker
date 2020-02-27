@@ -1,28 +1,38 @@
 let mqtt = require('mqtt')
-let client  = mqtt.connect([{
-	username: 'Dave',
-	password: 'kkmtest',
-	port: 1883,
-	host: 'localhost'
-}]) 
+
+const config = require('./config.json');
+const defaultConfig = config.development;
+// const environment = process.env.NODE_ENV || 'development';
 
 let macList = [
 	'D03304003302',
 	'pick number 2 me lord!'
 ]
 
-client.on('connect', function () {
-  client.subscribe('kbeacon/publish/'+macList[0], function (err) {
-    if (!err) {
-      console.log('Subscribed to: ' + macList[0]);
-    }else{
-	console.log('Failure subscribing to: ' + macList[0]);
-    }
-  })
-})
+class broker {
 
-client.on('message', function (topic, message) {
-  // message is Buffer
-  console.log(message.toString())
-  client.end()
-})
+	constructor(){
+		this.startBroker();
+	}
+
+	startBroker(){
+		this.client  = mqtt.connect([{
+			username: defaultConfig.brokerConnection.username,
+			password: defaultConfig.brokerConnection.password,
+			port: defaultConfig.brokerConnection.port,
+			host: defaultConfig.brokerConnection.host
+		}]) 
+	}
+
+	closeBroker(){
+		// probably a close call 
+	}
+
+	getClient(){
+		return this.client;
+	}
+
+	
+}
+
+module.exports = broker;
