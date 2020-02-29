@@ -10,6 +10,8 @@ let macList = [
 
 class broker {
 
+	clientList = []
+
 	constructor(){
 		this.startBroker();
 	}
