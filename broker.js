@@ -21,7 +21,6 @@ class broker {
 			port: defaultConfig.brokerConnection.port,
 			host: defaultConfig.brokerConnection.host
 		}]) 
-		this.subscribeToClients()
 	}
 
 	closeBroker(){
