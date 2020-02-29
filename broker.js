@@ -6,7 +6,6 @@ const defaultConfig = config.development;
 
 let macList = [
 	'D03304003302',
-	'pick number 2 me lord!'
 ]
 
 class broker {
@@ -22,6 +21,7 @@ class broker {
 			port: defaultConfig.brokerConnection.port,
 			host: defaultConfig.brokerConnection.host
 		}]) 
+		this.subscribeToClients()
 	}
 
 	closeBroker(){
@@ -32,7 +32,20 @@ class broker {
 		return this.client;
 	}
 
+	subscribeToClients(){
+		macList.forEach(mac =>{
+			this.client.subscribe('kbeacon/publish/'+mac, function (err) {
+				if (!err) {
+					console.log('Subscribed to: ' + mac);
+				}else{
+					console.log('Failure subscribing to: ' + mac);
+				}
+			})
+		}); 
+		
+	}
 	
 }
+
 
 module.exports = broker;
