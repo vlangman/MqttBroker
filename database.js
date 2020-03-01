@@ -2,6 +2,9 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 
 var db
+var isAlive = false;
+
+exports.isAlive = isAlive;
 
 exports.db = db
 
@@ -9,8 +12,12 @@ exports.open=function(path) {
     return new Promise(function(resolve) {
     this.db = new sqlite3.Database(path, 
         function(err) {
-            if(err) reject("Open error: "+ err.message)
-            else    resolve(path + " opened")
+            if(err) 
+                reject("Open error: "+ err.message)
+            else{
+                resolve(path + " opened")
+                isAlive = true;
+            }    
         }
     )   
     })
