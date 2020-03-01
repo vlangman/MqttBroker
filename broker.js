@@ -75,7 +75,7 @@ class broker {
 	}
 
 	subscribeToClients = async() =>{
-		count = 0;
+		let count = 0;
 		macList.forEach(mac =>{
 			this.client.subscribe('kbeacon/publish/'+mac, function (err) {
 				return new Promise((Resolve, Reject)=>{
