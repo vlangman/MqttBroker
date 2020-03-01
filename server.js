@@ -14,7 +14,7 @@ let client = null;
 	client = broker.getClient();
 
 	client.on('message', function (topic, message) {
-		console.log(message.toString());
+		console.log("HANDLING MESSAGE: " + message);
 		broker.handleMessage(message.toJSON());
 
 	})
