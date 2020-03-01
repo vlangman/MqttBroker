@@ -1,8 +1,9 @@
-let mqtt = require('mqtt')
-
+const mqtt = require('mqtt')
+const scripts = require('./scripts.json')
 const config = require('./config.json');
 const defaultConfig = config.development;
-// const environment = process.env.NODE_ENV || 'development';
+const db = require("./database.js")
+
 
 let macList = [
 	'D03304003302',
@@ -22,11 +23,23 @@ class broker {
 			password: defaultConfig.brokerConnection.password,
 			port: defaultConfig.brokerConnection.port,
 			host: defaultConfig.brokerConnection.host
-		}]) 
+		}]);
 	}
 
 	closeBroker(){
 		// probably a close call 
+	}
+
+	configureDatabase = async() =>{
+		await db.open('./gateway.db').then((data)=>{
+			console.log(data);
+			
+			db.all("Select * from ADVDATA").then(rows=>{
+				rows.forEach(row=>{
+					console.log(row)
+				})
+			})
+		});
 	}
 
 	getClient(){

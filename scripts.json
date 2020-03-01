@@ -1,0 +1,28 @@
+{
+    "ADVDATA":{
+        "INSERT_ONE":{
+            "SQL":"INSERT INTO ADVDATA (Message,rssi,GatewayMac,BeaconMac, MessageIndex,TimeStamp) VALUES (:Message,:rssi, :GatewayMac,:BeaconMac, :MessageIndex, datetime('now'))",
+            "STRUCTURE":{
+                "AdvDataSeqNo":0,
+                "Message": "",
+                "rssi": 0,
+                "GatewayMac": 0,
+                "BeaconMac": 0,
+                "MessageIndex" : 0,
+                "TimeStamp": ""
+            }
+        },
+        "SELECT_ALL":{
+            "SQL":"SELECT AdvDataSeqNo,Message,rssi,GatewayMac,BeaconMac,MessageIndex,TimeStamp FROM ADVDATA",
+            "STRUCTURE":{
+                "AdvDataSeqNo":0,
+                "Message": "",
+                "rssi": 0,
+                "GatewayMac": 0,
+                "BeaconMac": 0,
+                "MessageIndex" : 0,
+                "TimeStamp": ""
+            }
+        }
+    }
+}
