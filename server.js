@@ -15,6 +15,7 @@ let client = null;
 
 	client.on('message', function (topic, message) {
 		console.log(message.toString());
+		broker.handleMessage(message.toJSON());
 
 	})
 })();

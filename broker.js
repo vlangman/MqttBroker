@@ -59,8 +59,6 @@ class broker {
 					db.get(scripts.VALIDATION.MAC_ADDRESS.SQL, null).then((success)=>{
 						if (success){
 							console.log(success);
-							// await db.run(scripts.ADVDATA)
-
 						}
 					});
 
@@ -85,7 +83,7 @@ class broker {
 						console.log('Failure subscribing to: ' + mac);
 						Reject(true);
 					}
-					if (count == macList.length())
+					if (count == macList.length)
 						Resolve(true);
 				});
 					
