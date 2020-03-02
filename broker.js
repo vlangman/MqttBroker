@@ -1,4 +1,4 @@
-const mqtt = require('mqtt')
+const mqtt = require('async-mqtt')
 const scripts = require('./scripts.json')
 const config = require('./config.json');
 const defaultConfig = config.development;
@@ -11,26 +11,31 @@ let macList = [
 
 class broker {
 
-	clientList = []
+	clientList = [];
+	updateStack = [];
+	client = null;
 
 	constructor(){
 	}
 
-	startBroker = async() =>{
-		return new Promise((Resolve)=>{
-			this.client  = mqtt.connect([{
-				username: defaultConfig.brokerConnection.username,
-				password: defaultConfig.brokerConnection.password,
-				port: defaultConfig.brokerConnection.port,
-				host: defaultConfig.brokerConnection.host
-			}]);
-			this.client.on('connect', async() => {
-				await this.subscribeToClients();
-				console.log("Client Started")
-				Resolve(true);
-			})
+	startBroker = async()=>{
+			await db.open("./gateway.db");
+			await this.connectMqtt();
+			console.log("BROKER START SUCCESSFUL");
+	}
+
+	connectMqtt= async()=>{
+		this.client  = await mqtt.connectAsync([{
+			username: defaultConfig.brokerConnection.username,
+			password: defaultConfig.brokerConnection.password,
+			port: defaultConfig.brokerConnection.port,
+			host: defaultConfig.brokerConnection.host
+		}])
+		this.client.on('connect', ()=> {
+			console.log("MQTT BROKER CONNECTION ESTABLISHED");
+			this.getClient().on('message', this.handleMessage(message));
+			return;
 		})
-		
 	}
 
 	closeBroker = async() =>{
@@ -38,30 +43,26 @@ class broker {
 		await db.close();
 	}
 
-	configureDatabase = async() =>{
-		await db.open('./gateway.db').then((data)=>{
-			console.log(data);
-		});
-	}
 
 	getClient(){
 		if (!this.client){
-			throw new Exception("Client not instantiated :(");
+			throw new Error("NO FUCKEN CLIENT M8 !!")
 		}
 		return this.client;
 	}
 
+
+	reverse(string){
+		return string.split("").reverse().join("");
+	}
+
 	//expect message in json format
 	handleMessage = async(message) =>{
-		return new Promise(Resolve =>{
+		return new Promise(async(Resolve) =>{
 			try{
+				// {"msg":"advData","gmac":"D03304003302","obj":[{"dmac":"4105020A33DD","rssi":"-50","data1":"0201061AFF4C0002157777772E6B6B6D636E2E636F6D00000100010001C5"}],"seq":179}
 				if (message.msg == "advData"){
-					db.get(scripts.VALIDATION.MAC_ADDRESS.SQL, null).then((success)=>{
-						if (success){
-							console.log(success);
-						}
-					});
-
+					await this.AdvInsert(message);
 				}else{
 					Resolve(true);
 				}
@@ -72,23 +73,46 @@ class broker {
 		});
 	}
 
-	subscribeToClients = async() =>{
-		let count = 0;
-		macList.forEach(mac =>{
-			this.client.subscribe('kbeacon/publish/'+mac, function (err) {
-				return new Promise((Resolve, Reject)=>{
-					if (!err) {
+	AdvInsert = async(Message)=>{
+		let objects = Message.obj;
+		let tasks = [];
+		objects.forEach(obj => {
+			let struct = scripts.ADVDATA.INSERT_ONE.STRUCTURE;
+			struct.$Message = obj.data1;
+			struct.$Rssi = obj.rssi;
+			struct.$GatewayMac = Message.gmac;
+			struct.$BeaconMac = obj.dmac;
+			struct.$MessageIndex = Message.seq;
+			tasks.push(db.run(scripts.ADVDATA.INSERT_ONE.SQL, struct));
+		});
+		let result = await Promise.all(tasks) 
+		return result;
+	}
+
+	advData = async(message)=>{
+		// {"msg":"advData","gmac":"D03304003302","obj":[{"dmac":"4105020A33DD","rssi":"-58","data1":"0201061AFF4C0002157777772E6B6B6D636E2E636F6D00000100010001C5"}],"seq":180}
+	}
+
+	subscribeToClients(){
+		return new Promise((Resolve)=>{
+			let subs = [];
+			macList.forEach(mac =>{
+			subs.push(async ()=>{
+				this.getClient().subscribe('kbeacon/publish/'+mac, function (err) {
+					if(!err) {
 						console.log('Subscribed to: ' + mac);
 					}else{
 						console.log('Failure subscribing to: ' + mac);
-						Reject(true);
 					}
-					if (count == macList.length)
-						Resolve(true);
-				});
-					
+					})
+				})
+			});
+			Promise.all(subs).then(()=>{
+				Resolve(1);
 			})
-		}); 
+		})
+
+		
 		
 	}
 	

@@ -1,12 +1,4 @@
 {
-    "VALIDATION":{
-        "MAC_ADDRESS":{
-            "SQL":"SELECT 1 FROM KBEACON kb, KGATEWAY kg WHERE kb.BeaconSeqNo = :BeaconSeqNo AND kg.GatewaySeqNo = :GatewaySeqNo",
-            "STRUCTURE":{
-                "VALID": false
-            }
-        }
-    },
     "KGATEWAY":{
         "SELECT_ONE": {
             "SQL": "",
@@ -19,16 +11,23 @@
 
     },
     "ADVDATA":{
+        "VALIDATION":{
+            "MAC_ADDRESS":{
+                "SQL":"SELECT kb.BeaconSeqNo, kg.GatewaySeqNo FROM KBEACON kb, KGATEWAY kg WHERE kb.MacAddress = $BeaconMac AND kg.MacAddress = $GatewayMac",
+                "STRUCTURE":{
+                    "$BeaconMac": "",
+                    "$GatewayMac": ""
+                }
+            }
+        },
         "INSERT_ONE":{
-            "SQL":"INSERT INTO ADVDATA (Message,rssi,GatewaySeqNo,BeaconSeqNo, MessageIndex,TimeStamp) VALUES (:Message,:rssi, :GatewaySeqNo,:BeaconSeqNo, :MessageIndex, datetime('now'))",
+            "SQL":"INSERT INTO ADVDATA (Message,Rssi,GatewayMac,BeaconMac,MessageIndex) VALUES (?,?,?,?,?)",
             "STRUCTURE":{
-                "AdvDataSeqNo":0,
-                "Message": "",
-                "rssi": 0,
-                "GatewayMac": 0,
-                "BeaconMac": 0,
-                "MessageIndex" : 0,
-                "TimeStamp": ""
+                "$Message": "",
+                "$Rssi": 0,
+                "$GatewayMac": 0,
+                "$BeaconMac": 0,
+                "$MessageIndex" : 0
             }
         },
         "SELECT_ALL":{
@@ -37,8 +36,8 @@
                 "AdvDataSeqNo":0,
                 "Message": "",
                 "rssi": 0,
-                "GatewayMac": 0,
-                "BeaconMac": 0,
+                "GatewaySeqNo": 0,
+                "BeaconSeqNo": 0,
                 "MessageIndex" : 0,
                 "TimeStamp": ""
             }
