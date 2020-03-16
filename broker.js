@@ -30,16 +30,16 @@ class broker {
 	}
 
 	connectMqtt= async()=>{
-		this.client  = await mqtt.connectAsync([{
-			username: defaultConfig.brokerConnection.username,
-			password: defaultConfig.brokerConnection.password,
-			port: defaultConfig.brokerConnection.port,
-			host: defaultConfig.brokerConnection.host
-		}])
-		this.client.on('connect', ()=> {
-			console.log("MQTT BROKER CONNECTION ESTABLISHED");
-			this.getClient().on('message', this.handleMessage(message));
-			return;
+		return new Promise(async(Resolve)=>{
+			this.client  = await mqtt.connectAsync([{
+				username: defaultConfig.brokerConnection.username,
+				password: defaultConfig.brokerConnection.password,
+				port: defaultConfig.brokerConnection.port,
+				host: defaultConfig.brokerConnection.host
+			}])
+			this.client.on('connect', ()=> {
+				Resolve(1);
+			})
 		})
 	}
 

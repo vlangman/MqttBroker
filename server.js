@@ -7,9 +7,7 @@ const port = 4200
 let broker = new brokerService();
 
 broker.startBroker().then(()=>{
-    broker.getClient().on('connect', function () {
-        broker.subscribeToClients();
-    })
+    broker.subscribeToClients();
     
     broker.getClient().on('message', function (topic, message) {
         console.log(message.toString());
