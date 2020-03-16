@@ -13,21 +13,21 @@
     "ADVDATA":{
         "VALIDATION":{
             "MAC_ADDRESS":{
-                "SQL":"SELECT kb.BeaconSeqNo, kg.GatewaySeqNo FROM KBEACON kb, KGATEWAY kg WHERE kb.MacAddress = $BeaconMac AND kg.MacAddress = $GatewayMac",
+                "SQL":"SELECT kb.BeaconSeqNo, kg.GatewaySeqNo FROM KBEACON kb, KGATEWAY kg WHERE kb.MacAddress = BeaconMac AND kg.MacAddress = GatewayMac",
                 "STRUCTURE":{
-                    "$BeaconMac": "",
-                    "$GatewayMac": ""
+                    "BeaconMac": "",
+                    "GatewayMac": ""
                 }
             }
         },
         "INSERT_ONE":{
-            "SQL":"INSERT INTO ADVDATA (Message,Rssi,GatewayMac,BeaconMac,MessageIndex) VALUES (?,?,?,?,?)",
+            "SQL":"INSERT INTO ADVDATA (Message,Rssi,GatewaySeqNo,BeaconSeqNo,MessageIndex) VALUES (? ,?,(SELECT GatewaySeqNo FROM KGATEWAY WHERE KGATEWAY.MacAddress = ?),(SELECT BeaconSeqNo FROM KBEACON WHERE KBEACON.MacAddress = ?),?);",
             "STRUCTURE":{
-                "$Message": "",
-                "$Rssi": 0,
-                "$GatewayMac": 0,
-                "$BeaconMac": 0,
-                "$MessageIndex" : 0
+                "Message": "",
+                "Rssi": 0,
+                "GatewayMac": 0,
+                "BeaconMac": 0,
+                "MessageIndex" : 0
             }
         },
         "SELECT_ALL":{

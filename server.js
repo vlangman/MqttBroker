@@ -14,3 +14,26 @@ app.get('/', (req, res) => res.send('Hello World!'))
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+
+
+//get beacons 
+
+//get gateways
+
+//addbeacon
+
+//addgateway
+
+//deletebeacon
+
+//deleteGateway
+
+//updateBeacon
+
+//updateGateway
+
+
+app.get('/', function (req, res) {
+  
+})

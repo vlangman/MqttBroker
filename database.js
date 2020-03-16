@@ -1,84 +1,60 @@
-const sqlite3 = require('sqlite3').verbose()
-let db = null
-
-exports.db = db
+const Database = require('better-sqlite3');
 
 
-exports.open = function (path) {
-    return new Promise(function (resolve) {
-        this.db = new sqlite3.Database(path,
-            function (err) {
-                if (err) reject("Open error: " + err.message)
-                else resolve(path + " opened")
-            }
-        )
-    })
-}
 
-// any query: insert/delete/update
-exports.run = function (query, params) {
-    return new Promise(function (resolve, reject) {
-        this.db.run(query, params,
-            function (err) {
-                if (err) reject(err.message)
-                else resolve(true)
-            })
-    })
-}
+class database{
 
-// first row read
-exports.get = function (query, params) {
-    return new Promise(function (resolve, reject) {
-        this.db.get(query, params, function (err, row) {
-            if (err) reject("Read error: " + err.message)
-            else {
-                resolve(row)
-            }
+    //order of binds for all methods is to be sequential with the query parameters
+
+    instance = null
+
+    constructor(){
+        this.instance = new Database('gateway.db', { verbose: console.log });
+    }
+
+
+    async insertOne(query, binds){
+        return new Promise((resolve, reject)=>{
+            const insert = this.instance.prepare(query);
+
+            const insertOne = this.instance.transaction(([binds]) => {
+                insert.run(binds);
+            });
+
+            insertOne(binds).then(()=>{
+                resolve(1);
+            }).catch((err)=>{
+                reject(err);
+            });
+
         })
-    })
-}
+    }
 
-// set of rows read
-exports.all = function (query, params) {
-    console.log(params);
-    return new Promise(function (resolve, reject) {
-        if (params == undefined) params = []
 
-        this.db.all(query, params, function (err, rows) {
-            if (err) reject("Read error: " + err.message)
-            else {
-                resolve(rows)
+    async insertMany(query, binds){
+        return new Promise((resolve, reject)=>{
+            const insert = this.instance.prepare(query);
+
+            const insertMany = this.instance.transaction((dataarray) => {
+                for (const binds of dataarray){
+                    console.log(Object.values(binds))
+                    insert.run(Object.values(binds));
+                };
+            });
+            try{
+                insertMany(binds);
+                resolve(1);
             }
+            catch(err){
+                reject(err);
+            };
+
         })
-    })
+    }
+
+
 }
 
-// each row returned one by one 
-exports.each = function (query, params, action) {
-    return new Promise(function (resolve, reject) {
-        var db = this.db
-        db.serialize(function () {
-            db.each(query, params, function (err, row) {
-                if (err) reject("Read error: " + err.message)
-                else {
-                    if (row) {
-                        action(row)
-                    }
-                }
-            })
-            db.get("", function (err, row) {
-                resolve(true)
-            })
-        })
-    })
-}
-
-exports.close = function () {
-    return new Promise(function (resolve, reject) {
-        this.db.close()
-        resolve(true)
-    })
-}
-
+module.exports = database;
 
 
