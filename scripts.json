@@ -21,7 +21,7 @@
             }
         },
         "INSERT_ONE":{
-            "SQL":"INSERT INTO ADVDATA (Message,Rssi,GatewaySeqNo,BeaconSeqNo,MessageIndex) VALUES (? ,?,(SELECT GatewaySeqNo FROM KGATEWAY WHERE KGATEWAY.MacAddress = ?),(SELECT BeaconSeqNo FROM KBEACON WHERE KBEACON.MacAddress = ?),?);",
+            "SQL":"INSERT INTO ADVDATA (Message,Rssi,GatewaySeqNo,BeaconSeqNo,MessageIndex) VALUES (@Message ,@Rssi,(SELECT GatewaySeqNo FROM KGATEWAY WHERE KGATEWAY.MacAddress = @GatewayMac),(SELECT BeaconSeqNo FROM KBEACON WHERE KBEACON.MacAddress = @BeaconMac),@MessageIndex);",
             "STRUCTURE":{
                 "Message": "",
                 "Rssi": 0,

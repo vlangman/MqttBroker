@@ -24,7 +24,7 @@ class broker {
 		return new Promise( async (Resolve)=>{
 			await this.connectMqtt();
 			console.log("BROKER START SUCCESSFUL");
-			Resolve(1);
+			Resolve(this.client);
 		})
 			
 	}

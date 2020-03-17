@@ -38,8 +38,8 @@ class database{
 
             const insertMany = this.instance.transaction((dataarray) => {
                 for (const binds of dataarray){
-                    console.log(Object.values(binds))
-                    insert.run(Object.values(binds));
+                    console.log(binds)
+                    insert.run(binds);
                 };
             });
             try{
