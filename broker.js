@@ -3,14 +3,13 @@ const scripts = require('./scripts.json')
 const config = require('./config.json');
 const defaultConfig = config.development;
 const db = require("./database.js")
-
+const models = require('./models/broker.model.js')
 
 let macList = [
 	'D03304003302',
 ]
 
 class broker {
-
 	clientList = [];
 	updateStack = [];
 	client = null;
@@ -37,9 +36,7 @@ class broker {
 				port: defaultConfig.brokerConnection.port,
 				host: defaultConfig.brokerConnection.host
 			}])
-			this.client.on('connect', ()=> {
-				Resolve(1);
-			})
+			Resolve(1);	
 		})
 	}
 
@@ -65,7 +62,7 @@ class broker {
 		return new Promise(async(Resolve) =>{
 			try{
 				if (message.msg == "advData"){
-					this.database.insertMany(scripts.ADVDATA.INSERT_ONE.SQL, this.AdvInsert(message))
+					this.database.insertMany(scripts.ADVDATA.INSERT_ONE.SQL, models.AdvInsert(message))
 				}else{
 					Resolve(true);
 				}
@@ -76,22 +73,8 @@ class broker {
 		});
 	}
 
-	AdvInsert(Message){
-		let objects = Message.obj;
-		let result = []
-		objects.forEach(obj => {
-			let struct = scripts.ADVDATA.INSERT_ONE.STRUCTURE;
-			struct.Message = obj.data1;
-			struct.Rssi = obj.rssi;
-			struct.GatewayMac = Message.gmac;
-			struct.BeaconMac =  obj.dmac.match(/.{2}/g).reverse().join().replace(/,/g,'');
-			struct.MessageIndex = Message.seq;
-			result.push(struct);
-		});
-		return result;
-	}
-
-	subscribeToClients(){
+	subscribeToClients = async ()=>{
+		//fetch the mac list from the database
 		return new Promise((Resolve)=>{
 			let subs = [];
 			macList.forEach(mac =>{
@@ -112,6 +95,5 @@ class broker {
 	}
 	
 }
-
 
 module.exports = broker;
