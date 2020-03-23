@@ -26,7 +26,6 @@ class database{
             const insertOne = this.instance().transaction(([binds]) => {
                 insert.run(binds);
             });
-
             try{
                 insertOne(binds);
                 resolve(1);
@@ -54,7 +53,6 @@ class database{
             catch(err){
                 reject(err);
             };
-
         })
     }
 

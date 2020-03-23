@@ -8,7 +8,7 @@ module.exports.create = (req, res) => {
     res.send(req.params);
 };
 
-// Retrieve and return all beacons or gateways  
+// Retrieve and return all beacons or gateways     
 module.exports.findAll = (req, res) => {
 
 };
