@@ -1,4 +1,4 @@
-const mqtt = require('async-mqtt')
+const mqtt = require('mqtt')
 const scripts = require('./scripts.json')
 const config = require('./config.json');
 const defaultConfig = config.development;
@@ -17,22 +17,17 @@ class broker {
 
 	constructor(){
 		this.database = new db();
+		this.startBroker();
 	}
 
 	startBroker = async()=>{
-		return new Promise( async (Resolve)=>{
-			console.log("Connecting...");
-			this.client = await mqtt.connectAsync([{
-				username: defaultConfig.brokerConnection.username,
-				password: defaultConfig.brokerConnection.password,
-				port: defaultConfig.brokerConnection.port,
-				host: defaultConfig.brokerConnection.host
-			}])
-			Resolve(this.client);
-		})
-			
+		this.client  = mqtt.connect([{
+			username: defaultConfig.brokerConnection.username,
+			password: defaultConfig.brokerConnection.password,
+			port: defaultConfig.brokerConnection.port,
+			host: defaultConfig.brokerConnection.host
+		}]) 
 	}
-
 
 
 	closeBroker = async() =>{
@@ -68,25 +63,17 @@ class broker {
 		});
 	}
 
-	subscribeToClients = async ()=>{
-		//fetch the mac list from the database
-		return new Promise((Resolve)=>{
-			let subs = [];
-			macList.forEach(mac =>{
-			subs.push(async ()=>{
-				this.getClient().subscribe('kbeacon/publish/'+mac, function (err) {
-					if(!err) {
-						console.log('Subscribed to: ' + mac);
-					}else{
-						console.log('Failure subscribing to: ' + mac);
-					}
-					})
-				})
-			});
-			Promise.all(subs).then(()=>{
-				Resolve(1);
+	subscribeToClients(){
+		macList.forEach(mac =>{
+			this.client.subscribe('kbeacon/publish/'+mac, function (err) {
+				if (!err) {
+					console.log('Subscribed to: ' + mac);
+				}else{
+					console.log('Failure subscribing to: ' + mac);
+				}
 			})
-		})
+		}); 
+		
 	}
 	
 }
