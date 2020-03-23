@@ -22,24 +22,18 @@ class broker {
 	startBroker = async()=>{
 		return new Promise( async (Resolve)=>{
 			console.log("Connecting...");
-			await this.connectMqtt();
-			console.log("BROKER START SUCCESSFUL");
-			Resolve(this.client);
-		})
-			
-	}
-
-	connectMqtt= async()=>{
-		return new Promise(async(Resolve)=>{
-			this.client  = await mqtt.connectAsync([{
+			this.client = await mqtt.connectAsync([{
 				username: defaultConfig.brokerConnection.username,
 				password: defaultConfig.brokerConnection.password,
 				port: defaultConfig.brokerConnection.port,
 				host: defaultConfig.brokerConnection.host
 			}])
-			Resolve(1);	
+			Resolve(this.client);
 		})
+			
 	}
+
+
 
 	closeBroker = async() =>{
 		// probably a close call 
