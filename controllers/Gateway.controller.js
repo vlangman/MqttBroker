@@ -1,5 +1,5 @@
 const db = require("./../database.js");
-let database = new database();
+let database = new db();
 
 
 // Create and Save a new beacon or gateway
