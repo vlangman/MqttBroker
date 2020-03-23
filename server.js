@@ -15,6 +15,7 @@ let client = broker.getClient();
 
 client.on('connect', function (topic, message) {
     console.log("Broker Connected");
+    broker.subscribeToClients();
 })
 client.on('message', function (topic, message) {
     console.log(message.toString());
