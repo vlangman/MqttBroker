@@ -9,7 +9,7 @@
             "SQL": "SELECT GatewaySeqNo , GatewayName, MacAddress FROM KGATEWAY WHERE GatewaySeqNo = @GatewaySeqNo OR MacAddress = @MacAddress OR GatewayName = @GatewayName"
         },
         "INSERT_ONE": {
-            "SQL": "INSERT INTO KGATEWAY (GatewayName, MacAddress) VALUES (@BeaconName, @MacAddress)"
+            "SQL": "INSERT INTO KGATEWAY (GatewayName, MacAddress) VALUES (@GatewayName, @MacAddress)"
         },
         "SELECT_ALL": {
             "SQL": "SELECT GatewaySeqNo, GatewayName, MacAddress FROM KGATEWAY"
@@ -29,6 +29,9 @@
         },
         "INSERT_ONE":{
             "SQL": "INSERT INTO KBEACON (BeaconName, MacAddress) VALUES (@BeaconName, @MacAddress);"
+        },
+        "UPDATE_ONE":{
+            "SQL": "UPDATE KBEACON SET(BeaconName = @BeaconName, MacAddress = @MacAddress) WHERE BeaconSeqNo = @BeaconSeqNo"
         }
     },
     "ADVDATA":{

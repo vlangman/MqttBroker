@@ -1,5 +1,5 @@
 var express = require('express');
-var gatewayController = require('../controllers/Beacon.controller');
+var gatewayController = require('../controllers/Gateway.controller');
 var beaconController = require('../controllers/Beacon.controller');
 var router = express.Router();
 
