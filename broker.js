@@ -64,7 +64,7 @@ class broker {
 		return new Promise(async(Resolve) =>{
 			try{
 				if (message.msg == "advData"){
-					this.database.insertMany(scripts.ADVDATA.INSERT_ONE.SQL, AdvInsert(message))
+					this.database.ExecuteStatement(scripts.ADVDATA.INSERT_ONE.SQL, AdvInsert(message))
 				}else{
 					Resolve(true);
 				}

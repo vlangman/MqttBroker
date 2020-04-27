@@ -13,6 +13,12 @@
         },
         "SELECT_ALL": {
             "SQL": "SELECT GatewaySeqNo, GatewayName, MacAddress FROM KGATEWAY"
+        },
+        "UPDATE_ONE":{
+            "SQL": "UPDATE KGATEWAY SET GatewayName = @GatewayName, MacAddress = @MacAddress WHERE GatewaySeqNo = @GatewaySeqNo"
+        },
+        "DELETE_ONE":{
+            "SQL": "DELETE FROM KGATEWAY WHERE GatewayName = @GatewayName OR MacAddress = @MacAddress OR GatewaySeqNo = @GatewaySeqNo"
         }
     },
     "KBEACON":{
@@ -31,7 +37,10 @@
             "SQL": "INSERT INTO KBEACON (BeaconName, MacAddress) VALUES (@BeaconName, @MacAddress);"
         },
         "UPDATE_ONE":{
-            "SQL": "UPDATE KBEACON SET(BeaconName = @BeaconName, MacAddress = @MacAddress) WHERE BeaconSeqNo = @BeaconSeqNo"
+            "SQL": "UPDATE KBEACON SET BeaconName = @BeaconName, MacAddress = @MacAddress WHERE BeaconSeqNo = @BeaconSeqNo"
+        },
+        "DELETE_ONE":{
+            "SQL": "DELETE FROM KBEACON WHERE BeaconName = @BeaconName OR MacAddress = @MacAddress OR BeaconSeqNo = @BeaconSeqNo"
         }
     },
     "ADVDATA":{
@@ -54,7 +63,6 @@
         },
         "SELECT_ALL":{
             "SQL":"SELECT AdvDataSeqNo,Message,rssi,GatewayMac,BeaconMac,MessageIndex,TimeStamp FROM ADVDATA"
-           
         }
     }
 }

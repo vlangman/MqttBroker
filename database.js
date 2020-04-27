@@ -45,61 +45,25 @@ class database{
         })
     }
 
-    insertOne(query, binds){
-        return new Promise((resolve, reject)=>{
-            try{
-                const insert = this.getinstance().prepare(query);
-                const insertOne = this.getinstance().transaction(([binds]) => {
-                    insert.run(binds);
-                });
-                insertOne(binds);
-                resolve(1);
-            }
-            catch(err){
-                reject(err);
-            };
-        })
-    }
 
-
-     insertMany(query, binds){
+     ExecuteStatement(query, binds){
         return new Promise((resolve, reject)=>{
             const insert = this.getinstance().prepare(query);
-            const insertMany = this.getinstance().transaction((dataarray) => {
+            const ExecuteStatement = this.getinstance().transaction((dataarray) => {
+                let info = []
                 for (const binds of dataarray){
-                    insert.run(binds);
+                    info.push(insert.run(binds));
                 };
+                return info;
             });
             try{
-                insertMany(binds);
-                resolve(true);
+                resolve(ExecuteStatement(binds));
             }
             catch(err){
                 reject(err);
             };
         })
     }
-
-     getMany(query, binds){
-        return new Promise((resolve, reject)=>{
-            result = [];
-            const insert = this.getinstance().prepare(query);
-            const insertMany = this.getinstance().transaction((dataarray) => {
-                for (const binds of dataarray){
-                    console.log(binds)
-                    result += insert.get(binds);
-                };
-            });
-            try{
-                insertMany(binds);
-                resolve(result);
-            }
-            catch(err){
-                reject(err);
-            };
-        })
-    }
-
 
     close(){
         if (this.instance != null)
