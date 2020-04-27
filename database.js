@@ -1,5 +1,5 @@
 const Database = require('better-sqlite3');
-
+const fs = require('fs');
 
 
 class database{
@@ -15,7 +15,8 @@ class database{
         return this.instance;
     }
 
-    constructor(){}
+    constructor(){
+    }
 
     get(query, binds){
         return new Promise((resolve, reject)=>{
@@ -48,15 +49,15 @@ class database{
 
      ExecuteStatement(query, binds){
         return new Promise((resolve, reject)=>{
-            const insert = this.getinstance().prepare(query);
-            const ExecuteStatement = this.getinstance().transaction((dataarray) => {
-                let info = []
-                for (const binds of dataarray){
-                    info.push(insert.run(binds));
-                };
-                return info;
-            });
             try{
+                const insert = this.getinstance().prepare(query);
+                const ExecuteStatement = this.getinstance().transaction((dataarray) => {
+                    let info = []
+                    for (const binds of dataarray){
+                        info.push(insert.run(binds));
+                    };
+                    return info;
+                });
                 resolve(ExecuteStatement(binds));
             }
             catch(err){
@@ -71,6 +72,12 @@ class database{
             console.log("SHUTTING DOWN DB CONN");
             this.instance.close();
         }
+    }
+
+    //warning only run when you wish to recreate the tables THIS WILL WIPE ALL DATA EXCEPT BACKUPS
+    resetDB(){
+        const reset = fs.readFileSync('./init_database.sql', 'utf8');
+        this.getinstance().exec(reset);
     }
 
 }

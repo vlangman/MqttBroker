@@ -61,15 +61,20 @@ class broker {
 
 	//expect message in json format
 	handleMessage = async(message) =>{
-		return new Promise(async(Resolve) =>{
+		return new Promise(async(Resolve,Reject) =>{
 			try{
 				if (message.msg == "advData"){
-					this.database.ExecuteStatement(scripts.ADVDATA.INSERT_ONE.SQL, AdvInsert(message))
+					this.database.ExecuteStatement(scripts.ADVDATA.INSERT_ONE.SQL, this.AdvInsert(message)).then((success)=>{
+						console.log(success)
+						Resolve(true);
+					}).catch(err=>{
+						Reject(err);
+					})
 				}else{
 					Resolve(true);
 				}
 			}catch(err){
-				console.log(err)
+				Reject(err);
 			}
 		
 		});
@@ -84,7 +89,7 @@ class broker {
 						console.log(`Successful Subscription to ${beacon.BeaconName} - ${beacon.MacAddress}`);
 					}else{
 						console.log(`Failure subscribing to ${beacon.BeaconName} - ${beacon.MacAddress}`);
-						console.log(err);
+						console.log(err.message);
 					}
 				})
 			}); 

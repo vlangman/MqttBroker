@@ -27,6 +27,5 @@ FOREIGN KEY (GatewaySeqNo) REFERENCES KGATEWAY(GatewaySeqNo),
 FOREIGN KEY (BeaconSeqNo) REFERENCES KBEACON(BeaconSeqNo)
 );
 
-INSERT INTO KGATEWAY (GatewayName, MacAddress) VALUES("Kgateway1", "D03304003302");
-INSERT INTO KBEACON (BeaconName, MacAddress) VALUES("k8_Beacon", "DD330A020541");
-
+-- INSERT INTO KBEACON (BeaconName, MacAddress) VALUES ("k8_Beacon","DD330A020541");
+-- INSERT INTO KGATEWAY (GatewayName, MacAddress) VALUES ("Kgateway1","D03304003302");
