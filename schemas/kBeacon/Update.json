@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "KbeaconUpdateSchema.json",
+    "type": "array",
+    "title": "KbeaconUpdateSchema",
+    "description": "Schema to validate kbeacons for update",
+    "default": [],
+    "additionalItems": false,
+    "items": {
+        "$id": "#/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "description": "A list of beacons to update",
+        "default": {},
+        "examples": [
+            {
+                "BeaconSeqNo":"",
+                "MacAddress": "",
+                "BeaconName": ""
+            }
+        ],
+        "additionalProperties": false,
+        "required": [
+            "BeaconSeqNo",
+            "MacAddress",
+            "BeaconName"
+        ],
+        "properties": {
+            "BeaconSeqNo":{
+                "$ref": "kBeaconSchema.json#/definitions/BeaconSeqNo",
+                "description": "The primary key of the beacon"
+            },
+            "BeaconName":{
+                "$ref": "kBeaconSchema.json#/definitions/BeaconName",
+                "description": "The Name of a beacon"
+            },
+            "MacAddress": {
+                "$ref": "kBeaconSchema.json#/definitions/MacAddress",
+                "description": "The mac address of a beacon"
+            }     
+        }
+    },
+    "minitems": 1
+}

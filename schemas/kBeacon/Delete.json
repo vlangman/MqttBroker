@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "KbeaconDeleteSchema.json",
+    "type": "array",
+    "title": "KbeaconDeleteSchema",
+    "description": "Schema to validate kbeacons to insert into the DB",
+    "default": [],
+    "additionalItems": false,
+    "items": {
+        "$id": "#/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "description": "A list of beacons to delete",
+        "default": {},
+        "examples": [
+            {
+                "MacAddress": "",
+                "BeaconName": ""
+            }
+        ],
+        "additionalProperties": false,
+        "properties": {
+            "BeaconSeqNo":{
+                "$ref": "kBeaconSchema.json#/definitions/BeaconSeqNo",
+                "description": "The  primary key of beacon"
+            },
+            "BeaconName":{
+                "$ref": "kBeaconSchema.json#/definitions/BeaconName",
+                "description": "The Name of a beacon"
+            },
+            "MacAddress": {
+                "$ref": "kBeaconSchema.json#/definitions/MacAddress",
+                "description": "The mac address of a beacon"
+            }     
+        },
+        "minproperties":1
+    },
+    "minitems": 1
+}

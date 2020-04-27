@@ -1,0 +1,41 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "kBeaconSelect.json",
+    "type": "array",
+    "title": "Get Kbeacon",
+    "description": "The select sql query stucture for a kBeacon item",
+    "default": {},
+    "additionalProperties": false,
+    "items": {
+        "$id": "#/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "description": "A list of Beacons objects to search, by one parameter per beacon obj",
+        "default": {},
+        "examples": [
+            {
+                "BeaconName": "your_beacon_name",
+                "BeaconSeqNo": 0,
+                "MacAddress": "your_mac_address"
+            }
+        ],
+        "additionalProperties": false,
+        "properties": {
+            "BeaconSeqNo": {
+                "$ref": "kBeaconSchema.json#/definitions/BeaconSeqNo",
+                "description": "The BeaconSeqNo of a beacon row"
+            },
+            "MacAddress": {
+                "$ref": "kBeaconSchema.json#/definitions/MacAddress",
+                "description": "The mac address of a beacon"
+            },
+            "BeaconName":{
+                "$ref": "kBeaconSchema.json#/definitions/BeaconName",
+                "description": "The Name of a beacon"
+            }        
+        },
+        "minProperties": 1,
+        "maxProperties": 1
+    },
+    "minItems": 1
+}
