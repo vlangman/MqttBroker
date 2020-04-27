@@ -48,7 +48,7 @@ class broker {
 		let objects = Message.obj;
 		let result = []
 		objects.forEach(obj => {
-			let struct = scripts.ADVDATA.INSERT_ONE.STRUCTURE;
+			let struct = Object.assign({}, scripts.ADVDATA.INSERT_ONE.STRUCTURE);
 			struct.Message = obj.data1;
 			struct.Rssi = obj.rssi;
 			struct.GatewayMac = Message.gmac;
@@ -76,15 +76,20 @@ class broker {
 	}
 
 	subscribeToClients(){
-		macList.forEach(mac =>{
-			this.client.subscribe('kbeacon/publish/'+mac, function (err) {
-				if (!err) {
-					console.log('Subscribed to: ' + mac);
-				}else{
-					console.log('Failure subscribing to: ' + mac);
-				}
-			})
-		}); 
+		this.database.getAll(scripts.KBEACON.SELECT_ALL.SQL).then((result)=>{
+			result.forEach(beacon =>{
+				console.log(beacon)
+				this.client.subscribe('kbeacon/publish/'+ beacon.MacAddress, (err) =>{
+					if (!err) {
+						console.log(`Successful Subscription to ${beacon.BeaconName} - ${beacon.MacAddress}`);
+					}else{
+						console.log(`Failure subscribing to ${beacon.BeaconName} - ${beacon.MacAddress}`);
+						console.log(err);
+					}
+				})
+			}); 
+		})
+	
 		
 	}
 	
