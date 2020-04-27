@@ -20,7 +20,6 @@ client.on('connect', function (topic, message) {
     console.log("Broker Connected");
     broker.subscribeToClients();
 })
-broker.subscribeToClients();
 client.on('message', function (topic, message) {
     console.log(message.toString());
     broker.handleMessage(message);
