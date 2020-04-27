@@ -1,0 +1,41 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "kGatewaySelect.json",
+    "type": "array",
+    "title": "Get kGateway",
+    "description": "The select sql query stucture for a kGateway item",
+    "default": {},
+    "additionalProperties": false,
+    "items": {
+        "$id": "#/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "description": "A list of Gateways objects to search, by one parameter per Gateway obj",
+        "default": {},
+        "examples": [
+            {
+                "GatewayName": "your_gateway_name",
+                "GatewaySeqNo": 0,
+                "MacAddress": "your_mac_address"
+            }
+        ],
+        "additionalProperties": false,
+        "properties": {
+            "GatewaySeqNo": {
+                "$ref": "kGatewaySchema.json#/definitions/GatewaySeqNo",
+                "description": "The GatewaySeqNo of a gateway row"
+            },
+            "MacAddress": {
+                "$ref": "kGatewaySchema.json#/definitions/MacAddress",
+                "description": "The mac address of a gateway"
+            },
+            "GatewayName":{
+                "$ref": "kGatewaySchema.json#/definitions/GatewayName",
+                "description": "The Name of a gateway"
+            }        
+        },
+        "minProperties": 1,
+        "maxProperties": 1
+    },
+    "minItems": 1
+}

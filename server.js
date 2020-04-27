@@ -1,6 +1,9 @@
 let app = require("./app.js")
 let brokerService = require("./broker.js")
-const port = 4200
+let db = require('./database.js')
+db = new db();
+const port = 3000
+const beaconController = require('./controllers/Beacon.controller.js');
 
 
 //init broker service and fetch client
@@ -26,3 +29,9 @@ app.get('/', (req, res) => res.send('Hello World!'))
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+
+process.on('exit', () => db.close());
+process.on('SIGHUP', () => process.exit(128 + 1));
+process.on('SIGINT', () => process.exit(128 + 2));
+process.on('SIGTERM', () => process.exit(128 + 15));

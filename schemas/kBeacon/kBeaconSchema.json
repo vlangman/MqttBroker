@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "kBeaconSchema.json",
+    "type": "object",
+    "title": "Kbeacon Root Schema",
+    "description": "Schema defining Kbeacon stucture",
+    "default": {},
+    "additionalProperties": false,
+    "definitions": {
+        "BeaconSeqNo": {
+            "$id": "#/properties/BeaconSeqNo",
+            "type": "integer",
+            "title": "The BeaconSeqNo Schema",
+            "description": "The kBeacon primary key",
+            "default": "Null",
+            "examples": [
+                "1"
+            ]
+        },
+        "MacAddress": {
+            "$id": "#/properties/MacAddress",
+            "type": "string",
+            "title": "The BeaconMac Schema",
+            "description": "The kBeacon Mac Address as string with or without colons (:)",
+            "default": "Null",
+            "examples": [
+                "D0:33:04:00:33:02",
+                "D03304003302"
+            ],
+            "pattern": "^([0-9a-fA-F][0-9a-fA-F]){6}$"
+        },
+        "BeaconName":{
+            "$id": "#/properties/BeaconName",
+            "type": "string",
+            "title": "The BeaconName Schema",
+            "description": "The Name of a beacon",
+            "default": "Null",
+            "examples": [
+                "BeaconName"
+            ]
+        }
+        
+    }
+}

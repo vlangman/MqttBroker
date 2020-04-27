@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "kGatewayInsertSchema.json",
+    "type": "array",
+    "title": "kGatewayInsertSchema",
+    "description": "Schema to validate kGateways to insert into the DB",
+    "default": [],
+    "additionalItems": false,
+    "items": {
+        "$id": "#/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "description": "A list of Gateways to add",
+        "default": {},
+        "examples": [
+            {
+                "MacAddress": "",
+                "GatewayName": ""
+            }
+        ],
+        "additionalProperties": false,
+        "required": [
+            "MacAddress",
+            "GatewayName"
+        ],
+        "properties": {
+            "GatewayName":{
+                "$ref": "kGatewaySchema.json#/definitions/GatewayName",
+                "description": "The Name of a Gateway"
+            },
+            "MacAddress": {
+                "$ref": "kGatewaySchema.json#/definitions/MacAddress",
+                "description": "The mac address of a gateway"
+            }     
+        }
+    },
+    "minitems": 1
+}

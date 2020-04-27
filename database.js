@@ -5,28 +5,53 @@ const Database = require('better-sqlite3');
 class database{
     // order of binds for all methods is to be sequential with the query parameters
     // use query STRUCTURE in TABLENAME.QUERYGROUP.QUERY.STRUCTURE to ensure ordering
-    static instance = null
+    static instance;
 
-    instance(){
-        if (!this.instance){
+    getinstance(){
+        if (this.instance == null){
             console.log("connecting DB");
-            return this.instance = new Database('gateway.db', { verbose: console.log });
+            return new Database('gateway.db', { verbose: console.log });
         }
-        return null
+        return this.instance;
     }
 
-    constructor(){
-        this.instance();
-    }
+    constructor(){}
 
-
-    async insertOne(query, binds){
+    get(query, binds){
         return new Promise((resolve, reject)=>{
-            const insert = this.instance().prepare(query);
-            const insertOne = this.instance().transaction(([binds]) => {
-                insert.run(binds);
-            });
             try{
+                let data = [];
+                let smtp = this.getinstance().prepare(query);
+                for(const bind in binds)
+                    data.push(smtp.get(binds[bind]))
+                resolve(data);
+            }
+            catch(err){
+                reject(err);
+            };
+        })
+    }
+
+    getAll(query){
+        return new Promise((resolve, reject)=>{
+            try{
+                let data = [];
+                let smtp = this.getinstance().prepare(query);
+                resolve(smtp.all());
+            }
+            catch(err){
+                reject(err);
+            };
+        })
+    }
+
+    insertOne(query, binds){
+        return new Promise((resolve, reject)=>{
+            try{
+                const insert = this.getinstance().prepare(query);
+                const insertOne = this.getinstance().transaction(([binds]) => {
+                    insert.run(binds);
+                });
                 insertOne(binds);
                 resolve(1);
             }
@@ -37,18 +62,17 @@ class database{
     }
 
 
-    async insertMany(query, binds){
+     insertMany(query, binds){
         return new Promise((resolve, reject)=>{
-            const insert = this.instance().prepare(query);
-            const insertMany = this.instance().transaction((dataarray) => {
+            const insert = this.getinstance().prepare(query);
+            const insertMany = this.getinstance().transaction((dataarray) => {
                 for (const binds of dataarray){
-                    console.log(binds)
                     insert.run(binds);
                 };
             });
             try{
                 insertMany(binds);
-                resolve(1);
+                resolve(true);
             }
             catch(err){
                 reject(err);
@@ -56,6 +80,34 @@ class database{
         })
     }
 
+     getMany(query, binds){
+        return new Promise((resolve, reject)=>{
+            result = [];
+            const insert = this.getinstance().prepare(query);
+            const insertMany = this.getinstance().transaction((dataarray) => {
+                for (const binds of dataarray){
+                    console.log(binds)
+                    result += insert.get(binds);
+                };
+            });
+            try{
+                insertMany(binds);
+                resolve(result);
+            }
+            catch(err){
+                reject(err);
+            };
+        })
+    }
+
+
+    close(){
+        if (this.instance != null)
+        {
+            console.log("SHUTTING DOWN DB CONN");
+            this.instance.close();
+        }
+    }
 
 }
 

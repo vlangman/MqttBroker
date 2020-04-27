@@ -1,46 +1,57 @@
 {
     "KGATEWAY":{
+        "STRUCTURE":{
+            "GatewaySeqNo": 0,
+            "GatewayName": "",
+            "MacAddress": ""
+        },
         "SELECT_ONE": {
-            "SQL": "",
-            "STRUCTURE":{
-
-            }
+            "SQL": "SELECT GatewaySeqNo , GatewayName, MacAddress FROM KGATEWAY WHERE GatewaySeqNo = @GatewaySeqNo OR MacAddress = @MacAddress OR GatewayName = @GatewayName"
+        },
+        "INSERT_ONE": {
+            "SQL": "INSERT INTO KGATEWAY (GatewayName, MacAddress) VALUES (@BeaconName, @MacAddress)"
+        },
+        "SELECT_ALL": {
+            "SQL": "SELECT GatewaySeqNo, GatewayName, MacAddress FROM KGATEWAY"
         }
     },
     "KBEACON":{
-
+        "STRUCTURE":{
+            "BeaconSeqNo": 0,
+            "BeaconName": "",
+            "MacAddress": ""
+        },
+        "SELECT_ONE": {
+            "SQL": "SELECT BeaconSeqNo, BeaconName, MacAddress FROM KBEACON WHERE BeaconSeqNo = @BeaconSeqNo OR MacAddress = @MacAddress OR BeaconName = @BeaconName"
+        },
+        "SELECT_ALL": {
+            "SQL": "SELECT BeaconSeqNo, BeaconName, MacAddress FROM KBEACON"
+        },
+        "INSERT_ONE":{
+            "SQL": "INSERT INTO KBEACON (BeaconName, MacAddress) VALUES (@BeaconName, @MacAddress);"
+        }
     },
     "ADVDATA":{
+        "STRUCTURE":{
+            "AdvDataSeqNo":0,
+            "Message": "",
+            "rssi": 0,
+            "GatewaySeqNo": 0,
+            "BeaconSeqNo": 0,
+            "MessageIndex" : 0,
+            "TimeStamp": ""
+        },
         "VALIDATION":{
             "MAC_ADDRESS":{
-                "SQL":"SELECT kb.BeaconSeqNo, kg.GatewaySeqNo FROM KBEACON kb, KGATEWAY kg WHERE kb.MacAddress = BeaconMac AND kg.MacAddress = GatewayMac",
-                "STRUCTURE":{
-                    "BeaconMac": "",
-                    "GatewayMac": ""
-                }
+                "SQL":"SELECT kb.BeaconSeqNo, kg.GatewaySeqNo FROM KBEACON kb, KGATEWAY kg WHERE kb.MacAddress = BeaconMac AND kg.MacAddress = GatewayMac"
             }
         },
         "INSERT_ONE":{
-            "SQL":"INSERT INTO ADVDATA (Message,Rssi,GatewaySeqNo,BeaconSeqNo,MessageIndex) VALUES (@Message ,@Rssi,(SELECT GatewaySeqNo FROM KGATEWAY WHERE KGATEWAY.MacAddress = @GatewayMac),(SELECT BeaconSeqNo FROM KBEACON WHERE KBEACON.MacAddress = @BeaconMac),@MessageIndex);",
-            "STRUCTURE":{
-                "Message": "",
-                "Rssi": 0,
-                "GatewayMac": 0,
-                "BeaconMac": 0,
-                "MessageIndex" : 0
-            }
+            "SQL":"INSERT INTO ADVDATA (Message,Rssi,GatewaySeqNo,BeaconSeqNo,MessageIndex) VALUES (@Message ,@Rssi,(SELECT GatewaySeqNo FROM KGATEWAY WHERE KGATEWAY.MacAddress = @GatewayMac),(SELECT BeaconSeqNo FROM KBEACON WHERE KBEACON.MacAddress = @BeaconMac),@MessageIndex);"
         },
         "SELECT_ALL":{
-            "SQL":"SELECT AdvDataSeqNo,Message,rssi,GatewayMac,BeaconMac,MessageIndex,TimeStamp FROM ADVDATA",
-            "STRUCTURE":{
-                "AdvDataSeqNo":0,
-                "Message": "",
-                "rssi": 0,
-                "GatewaySeqNo": 0,
-                "BeaconSeqNo": 0,
-                "MessageIndex" : 0,
-                "TimeStamp": ""
-            }
+            "SQL":"SELECT AdvDataSeqNo,Message,rssi,GatewayMac,BeaconMac,MessageIndex,TimeStamp FROM ADVDATA"
+           
         }
     }
 }
