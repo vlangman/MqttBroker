@@ -18,12 +18,7 @@ client.on('connect', function (topic, message) {
     broker.subscribeToClients();
 })
 
-client.on('message', (topic, message) =>{
-    console.log(`Message recieved for topic ${topic.toString()}, \n message : ${message.toString()}`)
-    broker.handleMessage(message).then().catch(err=>{
-        console.log(err.message)
-    });
-})
+client.on('message', broker.handleMessage(topic, message));
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
