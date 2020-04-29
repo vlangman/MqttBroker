@@ -18,7 +18,7 @@ client.on('connect', function (topic, message) {
     broker.subscribeToClients();
 })
 
-client.on('message', broker.handleMessage(topic, message));
+client.on('message', broker.handleMessage);
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
