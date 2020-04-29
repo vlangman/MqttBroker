@@ -55,8 +55,8 @@ class broker {
 	}
 
 	//expect message in json format
-	handleMessage = async(message) =>{
-		return new Promise(async(Resolve,Reject) =>{
+	handleMessage = (message) =>{
+		return new Promise((Resolve,Reject) =>{
 			try{
 				if (message.msg == "advData"){
 					console.log(message)
