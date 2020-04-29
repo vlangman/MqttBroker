@@ -18,9 +18,9 @@ client.on('connect', function (topic, message) {
     console.log("Broker Connected");
     broker.subscribeToClients();
 })
-client.on('message', function (topic, message) {
+client.on('message', async (topic, message) =>{
     console.log(`Message recieved for topic ${topic.toString()}, \n message : ${message.toString()}`)
-    broker.handleMessage(message).catch(err=>{
+    await broker.handleMessage(message).catch(err=>{
         console.log(err.message)
     });
 })
