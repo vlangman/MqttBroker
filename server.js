@@ -19,7 +19,8 @@ client.on('connect', function (topic, message) {
     broker.subscribeToClients();
 })
 client.on('message', function (topic, message) {
-    broker.handleMessage(message.toString()).catch(err=>{
+    console.log(`Message recieved for topic ${topic.toString()}, \n message : ${message.toString()}`)
+    broker.handleMessage(message).catch(err=>{
         console.log(err.message)
     });
 })
