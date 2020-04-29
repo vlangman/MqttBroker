@@ -4,12 +4,6 @@ const config = require('./config.json');
 const defaultConfig = config.development;
 const db = require("./database.js")
 
-
-//need to fetch this from DB 
-let macList = [
-	'D03304003302',
-]
-
 class broker {
 	clientList = [];
 	updateStack = [];
@@ -54,6 +48,7 @@ class broker {
 			struct.GatewayMac = Message.gmac;
 			struct.BeaconMac = obj.dmac.match(/.{2}/g).reverse().join().replace(/,/g, '');
 			struct.MessageIndex = Message.seq;
+			struct.TimeStamp = String(Date.now());
 			result.push(struct);
 		});
 		return result;
@@ -65,8 +60,7 @@ class broker {
 			try{
 				if (message.msg == "advData"){
 					this.database.ExecuteStatement(scripts.ADVDATA.INSERT_ONE.SQL, this.AdvInsert(message)).then((success)=>{
-						console.log(success)
-						Resolve(true);
+						Resolve(success);
 					}).catch(err=>{
 						Reject(err);
 					})
@@ -81,14 +75,14 @@ class broker {
 	}
 
 	subscribeToClients(){
-		this.database.getAll(scripts.KBEACON.SELECT_ALL.SQL).then((result)=>{
-			result.forEach(beacon =>{
-				console.log(beacon)
-				this.client.subscribe('kbeacon/publish/'+ beacon.MacAddress, (err) =>{
+		this.database.getAll(scripts.KGATEWAY.SELECT_ALL.SQL).then((result)=>{
+			result.forEach(gateway =>{
+				console.log(gateway)
+				this.client.subscribe('kbeacon/publish/'+ gateway.MacAddress, (err) =>{
 					if (!err) {
-						console.log(`Successful Subscription to ${beacon.BeaconName} - ${beacon.MacAddress}`);
+						console.log(`Successful Subscription to ${gateway.GatewayName} - ${gateway.MacAddress}`);
 					}else{
-						console.log(`Failure subscribing to ${beacon.BeaconName} - ${beacon.MacAddress}`);
+						console.log(`Failure subscribing to ${gateway.GatewayName} - ${gateway.MacAddress}`);
 						console.log(err.message);
 					}
 				})

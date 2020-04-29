@@ -1,6 +1,7 @@
 var express = require('express');
 var gatewayController = require('../controllers/Gateway.controller');
 var beaconController = require('../controllers/Beacon.controller');
+var advDataController = require('../controllers/AdvData.controller');
 var router = express.Router();
 
 /* GET home page. */
@@ -15,10 +16,12 @@ router.post('/kGateway', gatewayController.create);
 // Retrieve all beacons/gateway by search param in array of beacons/gateways
 router.get('/kBeacon', beaconController.get);
 router.get('/kGateway', gatewayController.get);
+router.get('/AdvData', advDataController.get);
 
 // Retrieve all  beacons/gateways with Id
 router.get('/kBeacons', beaconController.getAll);
 router.get('/kGateways', gatewayController.getAll);
+
 
 // Update a beacon/gateway with Id
 router.put('/kBeacon', beaconController.update);

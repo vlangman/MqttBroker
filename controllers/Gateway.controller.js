@@ -15,9 +15,8 @@ let ajv = new Ajv({ schemas: [kGatewaySchema, getGatewaySchema, insertGatewaySch
 const mapStructure = (structureToMap, data) => {
     //ensure you shallow copy the objects , database objects should be trivally copyable 
     let struct = Object.assign({}, structureToMap)
-    for (key in data) {
+    for (key in data)
         struct[key] = data[key];
-    }
     return struct;
 }
 
@@ -74,7 +73,7 @@ module.exports.get = (req, res) => {
             database.get(scripts.KGATEWAY.SELECT_ONE.SQL, structures).then((result) => {
                 renderSuccess(res, result, "Get Gateway Successful");
             }).catch(err => {
-                res.json(err);
+                renderError(res, err, "A Get gateway gateways database error occured")
             });
         }
     }
@@ -99,9 +98,9 @@ module.exports.getAll = (req, res) => {
 
 // Update a beacon or gateway identified by the macAdress or Id in the request
 module.exports.update = (req, res) => {
-    try {
-        let validate = ajv.compile(updateGatewaySchema);
-        let valid = validate(req.body);
+try {
+    let validate = ajv.compile(updateGatewaySchema);
+    let valid = validate(req.body);
         if (!valid) {
             renderError(res, validate.errors[0], "Request Parameter Validation Errors")
         } else {
