@@ -55,10 +55,10 @@ class broker {
 	}
 
 	//expect message in json format
-	handleMessage = (topic , message) =>{
-		console.log(`Message recieved for topic ${topic.toString()}, \n message : ${message.toString()}`)
+	handleMessage = (topic , msg) =>{
 		return new Promise((Resolve,Reject) =>{
 			try{
+				let message = JSON.parse(msg);
 				if (message.msg == "advData"){
 					this.database.ExecuteStatement(scripts.ADVDATA.INSERT_ONE.SQL, this.AdvInsert(message)).then((success)=>{
 						Resolve(success);
