@@ -19,9 +19,7 @@ client.on('connect', function (topic, message) {
     broker.subscribeToClients();
 })
 client.on('message', function (topic, message) {
-    console.log(topic);
-    console.log(message);
-    broker.handleMessage(message).catch(err=>{
+    broker.handleMessage(message.toString()).catch(err=>{
         console.log(err.message)
     });
 })
