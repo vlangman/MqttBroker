@@ -20,7 +20,7 @@ client.on('connect', function (topic, message) {
 
 client.on('message', (topic, message) =>{
     console.log(`Message recieved for topic ${topic.toString()}, \n message : ${message.toString()}`)
-    broker.handleMessage(message.toString()).then().catch(err=>{
+    broker.handleMessage(message).then().catch(err=>{
         console.log(err.message)
     });
 })

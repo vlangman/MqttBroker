@@ -56,6 +56,7 @@ class broker {
 
 	//expect message in json format
 	handleMessage = (message) =>{
+		console.log(message.msg);
 		return new Promise((Resolve,Reject) =>{
 			try{
 				if (message.msg == "advData"){
@@ -66,7 +67,7 @@ class broker {
 						Reject(err);
 					})
 				}else{
-					console.log(message.msg);
+					
 					Resolve(true);
 				}
 			}catch(err){
