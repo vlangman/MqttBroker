@@ -59,15 +59,18 @@ class broker {
 		return new Promise(async(Resolve,Reject) =>{
 			try{
 				if (message.msg == "advData"){
+					console.log(message)
 					this.database.ExecuteStatement(scripts.ADVDATA.INSERT_ONE.SQL, this.AdvInsert(message)).then((success)=>{
 						Resolve(success);
 					}).catch(err=>{
 						Reject(err);
 					})
 				}else{
+					console.log(err);
 					Resolve(true);
 				}
 			}catch(err){
+				console.log(err);
 				Reject(err);
 			}
 		
