@@ -66,7 +66,7 @@ class broker {
 						Reject(err);
 					})
 				}else{
-					console.log(err);
+					console.log(message.msg);
 					Resolve(true);
 				}
 			}catch(err){
