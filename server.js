@@ -19,6 +19,7 @@ client.on('connect', function (topic, message) {
     broker.subscribeToClients();
 })
 
+// broker.handleMessage(null,'{"msg":"advData","gmac":"D03304003082","obj":[{"dmac":"7608020A33DD","rssi":"-57","data1":"0201061AFF4C0002157777772E6B6B6D636E2E636F6D00000100010001C5"}],"seq":9440}');
 
 client.on('message', (topic, msg)=>{
     console.log(msg.toString());

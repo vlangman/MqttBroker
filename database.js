@@ -1,6 +1,7 @@
 const Database = require('better-sqlite3');
 const fs = require('fs');
 const logger = require('./logger');
+const className = 'Database:';
 
 class database{
     // order of binds for all methods is to be sequential with the query parameters
@@ -61,7 +62,7 @@ class database{
                 resolve(ExecuteStatement(binds));
             }
             catch(err){
-                logger.logError(err, ExecuteStatement,arguments);
+                logger.logError(err,this.ExecuteStatement, arguments);
                 reject(err);
             };
         })
