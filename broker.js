@@ -60,6 +60,7 @@ class broker {
 			try{
 				let message = JSON.parse(msg);
 				if (message.msg == "advData"){
+					console.log(1/0);
 					this.database.ExecuteStatement(scripts.ADVDATA.INSERT_ONE.SQL, this.AdvInsert(message)).then((success)=>{
 						Resolve(success);
 					}).catch(err=>{
