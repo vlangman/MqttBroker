@@ -66,7 +66,6 @@ class broker {
 						Reject(err);
 					})
 				}else{
-					
 					Resolve(true);
 				}
 			}catch(err){

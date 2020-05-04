@@ -4,11 +4,13 @@ let db = require('./database.js')
 db = new db();
 const port = 3000
 
+//rerout consolur out through pretty logger so json 
+const clf = require('common-log-format')
+process.stdin.pipe(new clf()).pipe(process.stdout)
 
 //init broker service and fetch client
 console.log("Starting broker")
 const broker = new brokerService();
-
 
 const client = broker.getClient();
 
@@ -19,6 +21,7 @@ client.on('connect', function (topic, message) {
 
 
 client.on('message', (topic, msg)=>{
+    Console.Log(message);
     broker.handleMessage(topic,msg).then(success=>{
     }).catch(err=>{
         console.log(err.message)
