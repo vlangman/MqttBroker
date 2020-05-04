@@ -21,7 +21,7 @@ client.on('connect', function (topic, message) {
 
 
 client.on('message', (topic, msg)=>{
-    Console.Log(message);
+    console.log(message);
     broker.handleMessage(topic,msg).then(success=>{
     }).catch(err=>{
         console.log(err.message)
