@@ -6,7 +6,7 @@ for the system
 
 a postman collection for the API can be downloaded / viewed here 
 
-https://documenter.getpostman.com/view/3941008/TVenf8du
+https://www.getpostman.com/collections/65461e4fe9cb36077414
 
 
 start the server with ```node server.js```
