@@ -4,7 +4,7 @@ node js server that listens to mqtt brokers and subscribes to store their rssi d
 
 sqlite3 db can be setup/reset by running  ```init_database.sql``` in your sqllite3 client of choice.
 
-*note this api will subscribe to all gateways contained within the database KGateway table on api startup.
+*note the MQTT broker will subscribe/listen to all gateways contained within the database KGateway table on api startup.
 
 
 This server exposes an api layer used to process/manipulate and serve mqtt broker, beacons and gateways 
