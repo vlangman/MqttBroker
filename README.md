@@ -1,6 +1,6 @@
 # MqttBroker
 
-a small node js server that listens to mqtt brokers and subscribes to store their rssi data pings.
+node js server that listens to mqtt brokers and subscribes to store their rssi data pings.
 
 
 This server exposes an api layer used to process/manipulate and serve mqtt broker, beacons and gateways 
